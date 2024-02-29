@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useState } from "react";
 import "./pages.css";
@@ -7,8 +7,8 @@ const genAI = new GoogleGenerativeAI("AIzaSyAmaL0M7GZzbBrteRhQr3DQizJH0N22ssQ");
 
 export default function NewPage() {
   const [prompt, setPrompt] = useState(``);
-  const [text, setText] = useState(``);
-  console.log(text)
+  const [text, setText] = useState(`Write your Code in the AI Code Explainer Box`);
+  console.log(text);
   const handlePrompt = (event) => {
     setPrompt(event.target.value);
     console.log(prompt);
@@ -16,7 +16,7 @@ export default function NewPage() {
 
   async function run() {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    const finalPrompt = `Explain this code in Simple Paragraphs, don't use any bullets or titles or anything fancy, keep it response length short : ${prompt}`
+    const finalPrompt = `Explain this code in Simple Paragraphs, don't use any bullets or titles or anything fancy, keep it response length short : ${prompt}`;
     const result = await model.generateContent(finalPrompt);
 
     const response = result.response;
@@ -25,8 +25,11 @@ export default function NewPage() {
 
   const html = marked.parse(text);
   let regex = new RegExp(`<p>`, "g");
-  const convertedHtml = html.replace(regex,`<p><span style="display: inline-block; margin-left: 40px;"></span>`)
-  console.log(convertedHtml)
+  const convertedHtml = html.replace(
+    regex,
+    `<p style="margin-top:10px;"><span style="display: inline-block; margin-left: 40px;"></span>`
+  );
+  console.log(convertedHtml);
 
   return (
     <>
@@ -43,7 +46,11 @@ export default function NewPage() {
                 below and press "Explain Code" and AI will output a paragraph
                 explaining what the code is doing.
               </p>
-              <textarea className="textarea" rows={20} onChange={handlePrompt} />
+              <textarea
+                className="textarea"
+                rows={20}
+                onChange={handlePrompt}
+              />
               {/* <button onClick={run}>Generate</button> */}
               <div className="text-center">
                 <button
@@ -62,7 +69,13 @@ export default function NewPage() {
               </div>
             </div>
           </div>
-          <div class="md:col-span-3 text-justify jetbrains-mono" dangerouslySetInnerHTML={{ __html: convertedHtml }}></div>
+          <div class="md:col-span-3">
+            <div className="text-2xl font-bold">Response {'=>'} </div>
+            <div
+              class="text-justify jetbrains-mono"
+              dangerouslySetInnerHTML={{ __html: convertedHtml }}
+            ></div>
+          </div>
         </div>
       </div>
     </>
