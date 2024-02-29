@@ -27,7 +27,7 @@ export default function NewPage() {
   let regex = new RegExp(`<p>`, "g");
   const convertedHtml = html.replace(regex,`<p><span style="display: inline-block; margin-left: 40px;"></span>`)
   console.log(convertedHtml)
-  
+
   return (
     <>
       <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
@@ -62,7 +62,7 @@ export default function NewPage() {
               </div>
             </div>
           </div>
-          <div class="md:col-span-3 text-justify" dangerouslySetInnerHTML={{ __html: convertedHtml }}></div>
+          <div class="md:col-span-3 text-justify jetbrains-mono" dangerouslySetInnerHTML={{ __html: convertedHtml }}></div>
         </div>
       </div>
     </>
