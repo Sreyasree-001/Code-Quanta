@@ -1,8 +1,26 @@
-import Image from "next/image";
-import Link from "next/link";
-import Hello from "./hello";
-import "./pages.css"
+"use client";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { useState } from "react";
+import "./pages.css";
+
+const genAI = new GoogleGenerativeAI("AIzaSyAmaL0M7GZzbBrteRhQr3DQizJH0N22ssQ");
+
 export default function NewPage() {
+  const [prompt, setPrompt] = useState(``);
+  const [text, setText] = useState(``);
+
+  const handlePrompt = (event) => {
+    setPrompt(event.target.value);
+    console.log(prompt);
+  };
+
+  async function run() {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    setText(response.text());
+  }
+
   return (
     <>
       <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
@@ -18,11 +36,12 @@ export default function NewPage() {
                 below and press "Explain Code" and AI will output a paragraph
                 explaining what the code is doing.
               </p>
-              <textarea className="textarea" rows={8} />
+              <textarea className="textarea" rows={8} onChange={handlePrompt}/>
+              <button onClick={run}>Generate</button>
             </div>
-            <div>Made By</div>
+            
           </div>
-          <div class="md:col-span-3">2nd Section</div>
+          <div class="md:col-span-3">{text}</div>
         </div>
       </div>
     </>
