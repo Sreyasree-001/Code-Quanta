@@ -7,7 +7,7 @@ const genAI = new GoogleGenerativeAI("AIzaSyAmaL0M7GZzbBrteRhQr3DQizJH0N22ssQ");
 
 export default function NewPage() {
   const [prompt, setPrompt] = useState(``);
-  const [text, setText] = useState(`Write your Code in the AI Code Explainer Box`);
+  const [text, setText] = useState(`<p style="color:#565656;">Write your Code in the AI Code Explainer Box</p>`);
   console.log(text);
   const handlePrompt = (event) => {
     setPrompt(event.target.value);
@@ -47,6 +47,7 @@ export default function NewPage() {
                 explaining what the code is doing.
               </p>
               <textarea
+                spellCheck="false"
                 className="textarea"
                 rows={20}
                 onChange={handlePrompt}
