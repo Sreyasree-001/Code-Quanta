@@ -16,11 +16,18 @@ export default function NewPage() {
 
   async function run() {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
+    const finalPrompt = `Explain this code in Simple Paragraphs, don't use any bullets or titles or anything fancy, keep it response length short : ${prompt}`
+    const result = await model.generateContent(finalPrompt);
+
+    const response = result.response;
     setText(response.text());
   }
+
   const html = marked.parse(text);
+  let regex = new RegExp(`<p>`, "g");
+  const convertedHtml = html.replace(regex,`<p><span style="display: inline-block; margin-left: 40px;"></span>`)
+  console.log(convertedHtml)
+  
   return (
     <>
       <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
@@ -55,7 +62,7 @@ export default function NewPage() {
               </div>
             </div>
           </div>
-          <div class="md:col-span-3" dangerouslySetInnerHTML={{ __html: html }}></div>
+          <div class="md:col-span-3 text-justify" dangerouslySetInnerHTML={{ __html: convertedHtml }}></div>
         </div>
       </div>
     </>
