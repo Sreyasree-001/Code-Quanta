@@ -2,13 +2,13 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useState } from "react";
 import "./pages.css";
-
+import { marked } from "marked";
 const genAI = new GoogleGenerativeAI("AIzaSyAmaL0M7GZzbBrteRhQr3DQizJH0N22ssQ");
 
 export default function NewPage() {
   const [prompt, setPrompt] = useState(``);
   const [text, setText] = useState(``);
-
+  console.log(text)
   const handlePrompt = (event) => {
     setPrompt(event.target.value);
     console.log(prompt);
@@ -20,7 +20,7 @@ export default function NewPage() {
     const response = await result.response;
     setText(response.text());
   }
-
+  const html = marked.parse(text);
   return (
     <>
       <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
@@ -41,7 +41,7 @@ export default function NewPage() {
             </div>
             
           </div>
-          <div class="md:col-span-3">{text}</div>
+          <div class="md:col-span-3" dangerouslySetInnerHTML={{ __html: html }}></div>
         </div>
       </div>
     </>
