@@ -39,13 +39,13 @@ export default function Home() {
                         {/* End Announcement Banner */}
                         {/* Title */}
                         <div className="max-w-3xl text-center mx-auto">
-                            <h1 className="block font-medium raleway text-gray-200 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+                            <h1 className="block font-medium raleway text-[#05096c] text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
                                 Let AI help you understand programming better
                             </h1>
                         </div>
                         {/* End Title */}
                         <div className="max-w-3xl text-center mx-auto">
-                            <p className="text-lg text-gray-400">
+                            <p className="text-lg jetbrains-mono text-gray-900">
                                 Write your code and get detailed explanation
                             </p>
                         </div>
@@ -56,8 +56,8 @@ export default function Home() {
                                 data-text="Awesome"
                                 onClick={() => router.push('/dashboard')}
                             >
-                                <span class="actual-text">&nbsp;Generate&nbsp;</span>
-                                <span aria-hidden="true" class="hover-text">&nbsp;Generate&nbsp;</span>
+                                <span class="actual-text jetbrains-mono">&nbsp;Generate&nbsp;</span>
+                                <span aria-hidden="true" class="hover-text jetbrains-mono">&nbsp;Generate&nbsp;</span>
                             </button>
                         </div>
                         {/* End Buttons */}

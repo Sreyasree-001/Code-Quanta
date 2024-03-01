@@ -2,13 +2,22 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useState } from "react";
 import "./pages.css";
-import { marked } from "marked";
+import { marked, use } from "marked";
+import { MdFileUpload } from "react-icons/md";
+import axios from "axios";
+
 const genAI = new GoogleGenerativeAI("AIzaSyAmaL0M7GZzbBrteRhQr3DQizJH0N22ssQ");
 
 export default function NewPage() {
   const [prompt, setPrompt] = useState(``);
   const [text, setText] = useState(`<p style="color:#565656;">Write your Code in the AI Code Explainer Box</p>`);
-  console.log(text);
+  //states uploading file
+  const [useImage, setUseImage] = useState(false);
+  const [files, setFiles] = useState(null);
+  const [progress, setProgress] = useState({started: false, pc: 0})
+  const [msg,setMsg] = useState(null);
+  const [image,setImage] = useState("");
+
   const handlePrompt = (event) => {
     setPrompt(event.target.value);
     console.log(prompt);
@@ -30,6 +39,36 @@ export default function NewPage() {
     `<p style="margin-top:10px;"><span style="display: inline-block; margin-left: 40px;"></span>`
   );
   console.log(convertedHtml);
+  const handleUplaod = () => {
+    if(!files){
+      setMsg("No file Selected");
+      return;
+    }
+    const fd = new FormData();
+    for(let i=0;i<files.length;i++){
+      fd.append(`file${i+1}`,files[i]);
+    }
+    //setMsg("Uploading...")
+    setProgress(prevState => {
+      return {...prevState, started:true}
+    })
+    axios.post('http://httpbin.org/post', fd, {
+      onUploadProgress: (progressEvent) => {
+        setProgress(prevState => {
+          return {...prevState, pc: progressEvent.progress*100}
+        });
+      },
+      headers: {
+        "Custom-Header": "value",
+      }
+    })
+    .then(res => {
+      
+      console.log(res.data)
+    })
+    .catch(err => console.log(err))
+
+  }
 
   return (
     <>
@@ -46,14 +85,28 @@ export default function NewPage() {
                 below and press "Explain Code" and AI will output a paragraph
                 explaining what the code is doing.
               </p>
-              <textarea
-                spellCheck="false"
-                className="textarea"
-                rows={20}
-                onChange={handlePrompt}
-              />
+              {
+                useImage ?
+                <img src={URL.createObjectURL(image)} alt=""/>
+                :
+                <textarea
+                    spellCheck="false"
+                    className="textarea"
+                    rows={20}
+                    onChange={handlePrompt}
+                  />
+              }
               {/* <button onClick={run}>Generate</button> */}
               <div className="text-center">
+                <div className="flex flex-row space-x-2">
+                  <input 
+                  type="file"
+                  onChange={(e) => {setFiles(e.target.files[0])}}
+                  />
+                  <button
+                  onClick={handleUplaod}
+                  ><MdFileUpload /></button>
+                </div>
                 <button
                   onClick={run}
                   className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-white rounded-md shadow-2xl group"
