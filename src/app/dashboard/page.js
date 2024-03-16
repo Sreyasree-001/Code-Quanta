@@ -16,7 +16,7 @@ export default function NewPage() {
 
   async function run() {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    const finalPrompt = `Explain this code in Simple Paragraphs, don't use any bullets or titles or anything fancy, keep it response length short : ${prompt}`;
+    const finalPrompt = `Explain this code in Simple Paragraphs, don't use any bullets or titles or anything fancy, keep it response length short: ${prompt}`;
     const result = await model.generateContent(finalPrompt);
 
     const response = result.response;
@@ -36,7 +36,7 @@ export default function NewPage() {
       <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
         <div class="grid md:grid-cols-6 gap-10">
           <div class="md:col-span-3">
-            <div className="xl:max-w-2xl m-auto pr-10 text-center">
+            <div className="xl:max-w-2xl m-auto md:pr-10 pr-0 text-center">
               <h1 className="font-bold text-3xl anta-regular">
                 AI CODE EXPLAINER
               </h1>
